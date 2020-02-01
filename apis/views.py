@@ -9,7 +9,15 @@ from django.views import View
 from django.http import JsonResponse, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 
+# 参考：https://blog.csdn.net/u013205877/article/details/77602853
+# https://blog.csdn.net/kelisigk/article/details/97110087
+
+class Md2All(View):
+    def get(self, request):
+        return render(request, "Md2All.html")
+
 class TestView(View):
+
     @csrf_exempt
     def get(self, request):
         # 接收微信服务器get请求发过来的参数
@@ -21,16 +29,16 @@ class TestView(View):
             echostr = request.GET.get('echostr', None)
             # 服务器配置中的token
             token = '123456'
-            # 把参数放到list中排序后合成一个字符串，再用sha1加密得到新的字符串与微信发来的signature对比，如果相同就返回echostr给服务器，校验通过
             hashlist = [token, timestamp, nonce]
             hashlist.sort()
-            hashstr = ''.join([s for s in hashlist])
+            hashstr = ''.join(hashlist).encode()
             hashstr = hashlib.sha1(hashstr).hexdigest()
             if hashstr == signature:
                 return HttpResponse(echostr)
             else:
-                return HttpResponse("field")
+                return HttpResponse("weixin index")
         except Exception as err:
+            logging.info(err)
             return HttpResponse(err)
 
     @csrf_exempt

@@ -32,6 +32,7 @@ sitemaps = {
     'User': UserSiteMap,
     'static': StaticViewSitemap
 }
+from apis.views import Md2All
 
 handler404 = 'blog.views.page_not_found_view'
 handler500 = 'blog.views.server_error_view'
@@ -51,6 +52,7 @@ urlpatterns = [
                   url(r'', include('servermanager.urls', namespace='servermanager')),
                   url(r'', include('owntracks.urls', namespace='owntracks')),
                   path("api", include("apis.urls"), name="apis"),
+                  path("md2all", Md2All.as_view()),
               ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
