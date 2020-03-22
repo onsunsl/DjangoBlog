@@ -5,7 +5,7 @@
 """
 @version: ??
 @author: liangliangyy
-@license: MIT Licence 
+@license: MIT Licence
 @contact: liangliangyy@gmail.com
 @site: https://www.lylinux.net/
 @software: PyCharm
@@ -60,6 +60,14 @@ def convert_to_articlereply(articles, message):
         )
         reply.add_article(article)
     return reply
+
+
+@robot.link
+def get_share_link(message, session):
+    content = message.content
+    print("")
+    from servermanager.jd_cps.share_link import get_share_link
+    return get_share_link(content)
 
 
 @robot.filter(re.compile(r"^\?.*"))
